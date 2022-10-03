@@ -1,31 +1,81 @@
+
+/* general styles */
+
+
 *, *::before, *::after {
     box-sizing: border-box;
 }
 
-body {
-    margin: 0%;
+:root {
+    font-family: 'Roboto', sans-serif;
 }
 
-/* general flex styling */
+body {
+    margin: 0% auto;
+}
+
+main {
+    padding: 5vh 3vw;
+}
+
+
+/* flex classes */
 
 .flex {
     display: flex;
+    flex: 1;
 }
 
 .col {
     flex-direction: column;
 }
 
-.j-center {
-    justify-content: center;
-}
-
 .a-center {
     align-items: center;
 }
 
-/* components */
+.j-center {
+    justify-content: center;
+}
 
 
+/* list styling */
 
+.list-wrapper {
+    max-width: 100%;
+    min-width: 300px;
+    justify-content: center;
+
+}
+
+@media screen and (min-width: 530px) {
+    .list-wrapper {
+        max-width: 500px;
+    }
+}
+
+ul {
+    padding: 0%;
+    line-height: 2rem;
+}
+
+li {
+    background-color: whitesmoke;
+    border-bottom:solid 3px darkgrey;
+    justify-content: space-between;
+    list-style: none;
+}
+
+.input-container {
+    background-color: aquamarine;
+}
+
+#input-textfield {
+    height: 2rem;
+    flex-basis: 90%;
+}
+
+#add-item-btn {
+    flex-basis: 10%;
+}
 

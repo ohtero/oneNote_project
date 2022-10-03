@@ -6,16 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="/styling.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700&display=swap" rel="stylesheet">
     <script src="scripts.js" defer></script>
 </head>
 <body>
-<div class="wrapper flex j-center">    
-    <div class="input-container flex">
-        <input type="text" id="input-textfield">
-        <!-- <button id="add-item-btn">Add</button> -->
-    </div>
-    <ul id="item-list">
-    </ul>   
-</div>    
+    <main class="flex j-center">
+        <div class="list-wrapper flex col">    
+            <div class="input-container flex">
+                <input type="text" id="input-textfield" class="flex">
+                <button id="add-item-btn" class="flex a-center j-center">Add</button>
+            </div>
+            <div>
+                <ul id="item-list">             
+                </ul>
+            </div> 
+        </div>    
+    </main>
 </body>
 </html>
