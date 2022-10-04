@@ -126,7 +126,8 @@ button {
     color: white;
 }
 
-.del-row-btn, 
+.del-row-btn,
+.edit, 
 #add-item-btn {
     border:solid 2px #999;
     flex-basis: 10%;
