@@ -28,14 +28,25 @@ function createTextfield() {
     newField.type = 'text';
     newField.className = 'list-textfield';
     newField.value = inputField.value;
+    newField.setAttribute('disabled', '');
+    newField.addEventListener('blur', disableTextfield);
+    newField.addEventListener('keydown', dropFocus);
     return newField;
 };
 
-function createButton() {                                   
+function createDelButton() {                                   
     const newBtn = document.createElement("button");
     newBtn.className = "del-row-btn";
     newBtn.innerHTML = "Del";
     newBtn.addEventListener("click", deleteRow);
+    return newBtn;
+};
+
+function createEditButton() {                                   
+    const newBtn = document.createElement("button");
+    newBtn.className = "edit";
+    newBtn.innerHTML = "Edit";
+    newBtn.addEventListener("click", editText);
     return newBtn;
 };
 
@@ -59,7 +70,8 @@ function createListItem() {
     const newItem = document.createElement("li");
     newItem.appendChild(createCheckboxContainer());
     newItem.appendChild(createTextfield());
-    newItem.appendChild(createButton());
+    newItem.appendChild(createEditButton());
+    newItem.appendChild(createDelButton());
     return newItem;
 };
 
@@ -94,5 +106,28 @@ function checkState() {
             textfield.style['color'] = '#111';};
 };
 
+// Avaa tekstikentän editoimista varten
+
+function editText() {
+    const textfield = this.previousElementSibling;
+
+    textfield.removeAttribute('disabled');
+    textfield.focus();
+};
+
+// Lukitsee tekstikentän
+
+function disableTextfield() {
+    const textfield = this;
+    textfield.setAttribute('disabled', '');   
+};
+
+function dropFocus (e) {
+    if (e.key == 'Enter') {
+    this.blur(); 
+    };
+};
 
 //----------- Event-funktiot loppuu -----------//
+
+
