@@ -62,8 +62,8 @@ function createEditButton() {
 function createOptionItems() {
     const newItems = document.createElement('div');
     newItems.className = 'option-items';
-    newItems.appendChild(createDelButton());
     newItems.appendChild(createEditButton());
+    newItems.appendChild(createDelButton());
     return newItems;
 };
 
