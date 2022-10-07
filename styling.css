@@ -185,4 +185,7 @@ button {
     transition-timing-function: ease-out;
 }
 
-
+#close-modal-btn {
+    width: fit-content;
+    height: 2rem;
+}
