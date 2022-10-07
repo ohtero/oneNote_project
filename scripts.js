@@ -23,6 +23,71 @@ document.getElementById("add-item-btn").addEventListener("click", checkFieldValu
 
 // Luo tekstisyötteen pohjalta uuden <li>-elementin, ja uudet elementit sen sisään 
 
+
+
+
+
+
+
+function createDelImg() {
+    const newImg = document.createElement('i');
+    newImg.className = 'bi bi-trash';
+    return newImg;
+};
+
+function createDelButton() {                                   
+    const newBtn = document.createElement("button");
+    newBtn.className = "del-row-btn";
+  
+    newBtn.appendChild(createDelImg());
+    newBtn.addEventListener("click", deleteRow);
+    return newBtn;
+};
+
+function createEditImg() {
+    const newImg = document.createElement('i');
+    newImg.className = 'bi bi-pencil';
+    return newImg;
+};
+
+function createEditButton() {                                   
+    const newBtn = document.createElement("button");
+    newBtn.className = "edit";
+
+    newBtn.appendChild(createEditImg());
+    newBtn.addEventListener("click", editText);
+    return newBtn;
+};
+
+function createOptionItems() {
+    const newItems = document.createElement('div');
+    newItems.className = 'option-items';
+    newItems.appendChild(createDelButton());
+    newItems.appendChild(createEditButton());
+    return newItems;
+};
+
+function createEllipsesImg() {
+    const newImg = document.createElement('i');
+    newImg.className = 'bi bi-three-dots';
+    return newImg;
+};
+
+function createOptionBtn() {
+    const newBtn = document.createElement('button');
+    newBtn.className = 'option-btn';
+    newBtn.appendChild(createEllipsesImg());
+    return newBtn;
+};
+
+function createOptionMenu() {
+    const newMenu = document.createElement('div');
+    newMenu.className = 'option-menu';
+    newMenu.appendChild(createOptionBtn());   
+    newMenu.appendChild(createOptionItems()); 
+    return newMenu;
+};
+
 function createTextfield() {
     const newField = document.createElement('input');
     newField.type = 'text';
@@ -34,21 +99,7 @@ function createTextfield() {
     return newField;
 };
 
-function createDelButton() {                                   
-    const newBtn = document.createElement("button");
-    newBtn.className = "del-row-btn";
-    newBtn.innerHTML = "Del";
-    newBtn.addEventListener("click", deleteRow);
-    return newBtn;
-};
 
-function createEditButton() {                                   
-    const newBtn = document.createElement("button");
-    newBtn.className = "edit";
-    newBtn.innerHTML = "Edit";
-    newBtn.addEventListener("click", editText);
-    return newBtn;
-};
 
 function createCheckbox() {
     const newCheckbox = document.createElement('input');
@@ -70,8 +121,8 @@ function createListItem() {
     const newItem = document.createElement("li");
     newItem.appendChild(createCheckboxContainer());
     newItem.appendChild(createTextfield());
-    newItem.appendChild(createEditButton());
-    newItem.appendChild(createDelButton());
+    newItem.appendChild(createOptionMenu());
+  
     return newItem;
 };
 
@@ -91,7 +142,7 @@ function appendItem() {
 // poistaa rivin 
 
 function deleteRow() {              
-    this.parentElement.remove();
+    this.parentElement.parentElement.parentElement.remove();  //muuta kohdistus
 };
 
 
@@ -109,7 +160,7 @@ function checkState() {
 // Avaa tekstikentän editoimista varten
 
 function editText() {
-    const textfield = this.previousElementSibling;
+    const textfield = this.parentElement.parentElement.previousElementSibling;   //muuta kohdistus
 
     textfield.removeAttribute('disabled');
     textfield.focus();
