@@ -63,6 +63,10 @@ function createEditButton() {
 
 // 'Options/ellipses' button
 
+function showOptions() {    // Open options functionality
+    this.nextElementSibling.classList.toggle('option-items-open')
+};
+
 function createEllipsesImg() {
     const newImg = document.createElement('i');
     newImg.className = 'bi bi-three-dots';
@@ -72,6 +76,7 @@ function createEllipsesImg() {
 function createOptionBtn() {
     const newBtn = document.createElement('button');
     newBtn.className = 'option-btn';
+    newBtn.addEventListener('click', showOptions);
     newBtn.appendChild(createEllipsesImg());
     return newBtn;
 };
@@ -123,13 +128,9 @@ function createTextfield() {
 
 // Checkbox
 
-function checkState() {
+function toggleState() {
     const textfield = this.parentElement.nextElementSibling;
-    if (this.checked) {
-        textfield.style['background-color'] = '#ccc';
-        textfield.style['color'] = '#777';
-    } else {textfield.style['background-color'] = '#fff';
-            textfield.style['color'] = '#111';};
+    textfield.classList.toggle('completed');
 };
 
 function createCheckbox() {
@@ -137,7 +138,7 @@ function createCheckbox() {
     newCheckbox.type = 'checkbox';
     newCheckbox.className = 'list-checkbox';
     newCheckbox.name = 'checkbox';
-    newCheckbox.addEventListener('click', checkState);
+    newCheckbox.addEventListener('click', toggleState);
     return newCheckbox;
 };
 
