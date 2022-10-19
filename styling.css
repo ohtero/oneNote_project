@@ -22,7 +22,7 @@ main {
 }
 
 
-/* flex classes */
+/* utility classes */
 
 .flex {
     display: flex;
@@ -127,6 +127,11 @@ li {
     border-color: #aaccff;
 }
 
+.completed {
+    background-color: #ccc;
+    color: #777;
+}
+
 /* button styling */
 
 button {
@@ -178,7 +183,7 @@ button {
     gap: .15rem;
 }
 
-.option-menu:hover .option-items {
+.option-items-open {
     width: 4.5rem;
     opacity: 100%;
     transition-duration: 200ms;
