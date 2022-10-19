@@ -1,24 +1,28 @@
+
+
+
 const inputField = document.getElementById("input-textfield"); 
+const modal = document.getElementById('alert-modal');    
 
-// Tarkistaa "add"-nappia painettaessa, onko syöttörivin arvo > 0. Jos ei, ilmoittaa virheestä.
-
-const modal = document.getElementById('alert-modal');       // <dialog>-elementti, joka avautuu sivun "päälle"
-const closeModal = document.getElementById('close-modal-btn');  // <dialog>-elementin sulkunappi    
+// Checks if input value is > 0. If not, opens error modal
 
 function checkFieldValue() {
     if (inputField.value.length > 0) {
         appendItem();
-    } else modal.showModal();    // avaa dialogin      
+    } else modal.showModal();  
 };
 
-closeModal.addEventListener('click', () => modal.close());  //sulkee dialogin
-
+document.getElementById('close-modal-btn').addEventListener('click', () => modal.close());  
 document.getElementById("add-item-btn").addEventListener("click", checkFieldValue);
 
 
-/* CREATE LIST ROW AND ITS' COMPONENTS */
+/*--- CREATE LIST ROW AND ITS' COMPONENTS ---*/
 
- // 'Del' button
+// Del button
+
+function deleteRow() {  // Delete functionality                                                           
+    this.parentElement.parentElement.parentElement.remove();
+}; 
 
 function createDelImg() {
     const newImg = document.createElement('i');
@@ -29,13 +33,19 @@ function createDelImg() {
 function createDelButton() {                                   
     const newBtn = document.createElement("button");
     newBtn.className = "del-row-btn";
-  
     newBtn.appendChild(createDelImg());
     newBtn.addEventListener("click", deleteRow);
     return newBtn;
 };
 
 // 'Edit' button
+
+function editText() {   // Edit functionality
+    const textfield = this.parentElement.parentElement.previousElementSibling;
+
+    textfield.removeAttribute('disabled');
+    textfield.focus();
+};
 
 function createEditImg() {
     const newImg = document.createElement('i');
@@ -46,7 +56,6 @@ function createEditImg() {
 function createEditButton() {                                   
     const newBtn = document.createElement("button");
     newBtn.className = "edit";
-
     newBtn.appendChild(createEditImg());
     newBtn.addEventListener("click", editText);
     return newBtn;
@@ -90,6 +99,17 @@ function createOptionMenu() {
 
 // Textfield
 
+function disableTextfield() {   // Locks textfield after editing
+    const textfield = this;
+    textfield.setAttribute('disabled', '');   
+};
+
+function dropFocus (e) {    // Blur textfield
+    if (e.key == 'Enter') {
+    this.blur(); 
+    };
+};
+
 function createTextfield() {
     const newField = document.createElement('input');
     newField.type = 'text';
@@ -102,6 +122,15 @@ function createTextfield() {
 };
 
 // Checkbox
+
+function checkState() {
+    const textfield = this.parentElement.nextElementSibling;
+    if (this.checked) {
+        textfield.style['background-color'] = '#ccc';
+        textfield.style['color'] = '#777';
+    } else {textfield.style['background-color'] = '#fff';
+            textfield.style['color'] = '#111';};
+};
 
 function createCheckbox() {
     const newCheckbox = document.createElement('input');
@@ -119,7 +148,7 @@ function createCheckboxContainer() {
     return newContainer;
 };
 
-// Combine components and append row to the <ul>
+// Combine components and append new <li> to the <ul>
 
 function createListItem() {
     const newItem = document.createElement("li");
@@ -134,55 +163,3 @@ function appendItem() {
     itemList.appendChild(createListItem());
     inputField.value = "";
 };
-
-
-
-
-
-//**************************************//
-//            Event-funktiot            //
-//**************************************//
-
-// poistaa rivin 
-
-function deleteRow() {              
-    this.parentElement.parentElement.parentElement.remove();  //muuta kohdistus
-};
-
-
-// Muuttaa listan tekstikentän väriä riippuen, onko ruutu merkattu 
-
-function checkState() {
-    const textfield = this.parentElement.nextElementSibling;
-    if (this.checked) {
-        textfield.style['background-color'] = '#ccc';
-        textfield.style['color'] = '#777';
-    } else {textfield.style['background-color'] = '#fff';
-            textfield.style['color'] = '#111';};
-};
-
-// Avaa tekstikentän editoimista varten
-
-function editText() {
-    const textfield = this.parentElement.parentElement.previousElementSibling;   //muuta kohdistus
-
-    textfield.removeAttribute('disabled');
-    textfield.focus();
-};
-
-// Lukitsee tekstikentän
-
-function disableTextfield() {
-    const textfield = this;
-    textfield.setAttribute('disabled', '');   
-};
-
-function dropFocus (e) {
-    if (e.key == 'Enter') {
-    this.blur(); 
-    };
-};
-
-//----------- Event-funktiot loppuu -----------//
-
-
