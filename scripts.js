@@ -42,7 +42,6 @@ function createDelButton() {
 
 function editText() {   // Edit functionality
     const textfield = this.parentElement.parentElement.previousElementSibling;
-
     textfield.removeAttribute('disabled');
     textfield.focus();
 };
@@ -58,6 +57,7 @@ function createEditButton() {
     newBtn.className = "edit";
     newBtn.appendChild(createEditImg());
     newBtn.addEventListener("click", editText);
+    newBtn.addEventListener('click', function() {this.parentElement.classList.remove('option-items-open');});   // Closes menu when 'Edit' is clicked
     return newBtn;
 };
 
