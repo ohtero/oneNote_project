@@ -16,18 +16,9 @@ closeModal.addEventListener('click', () => modal.close());  //sulkee dialogin
 document.getElementById("add-item-btn").addEventListener("click", checkFieldValue);
 
 
-//**************************************//
-//            Lisäysfukntiot            //
-//**************************************//
+/* CREATE LIST ROW AND ITS' COMPONENTS */
 
-
-// Luo tekstisyötteen pohjalta uuden <li>-elementin, ja uudet elementit sen sisään 
-
-
-
-
-
-
+ // 'Del' button
 
 function createDelImg() {
     const newImg = document.createElement('i');
@@ -44,6 +35,8 @@ function createDelButton() {
     return newBtn;
 };
 
+// 'Edit' button
+
 function createEditImg() {
     const newImg = document.createElement('i');
     newImg.className = 'bi bi-pencil';
@@ -59,13 +52,7 @@ function createEditButton() {
     return newBtn;
 };
 
-function createOptionItems() {
-    const newItems = document.createElement('div');
-    newItems.className = 'option-items';
-    newItems.appendChild(createEditButton());
-    newItems.appendChild(createDelButton());
-    return newItems;
-};
+// 'Options/ellipses' button
 
 function createEllipsesImg() {
     const newImg = document.createElement('i');
@@ -80,6 +67,19 @@ function createOptionBtn() {
     return newBtn;
 };
 
+// Items in Option menu
+
+function createOptionItems() {
+    const newItems = document.createElement('div');
+    newItems.className = 'option-items';
+    newItems.appendChild(createEditButton());
+    newItems.appendChild(createDelButton());
+    return newItems;
+};
+
+
+// Option menu container
+
 function createOptionMenu() {
     const newMenu = document.createElement('div');
     newMenu.className = 'option-menu';
@@ -87,6 +87,8 @@ function createOptionMenu() {
     newMenu.appendChild(createOptionItems()); 
     return newMenu;
 };
+
+// Textfield
 
 function createTextfield() {
     const newField = document.createElement('input');
@@ -99,7 +101,7 @@ function createTextfield() {
     return newField;
 };
 
-
+// Checkbox
 
 function createCheckbox() {
     const newCheckbox = document.createElement('input');
@@ -117,12 +119,13 @@ function createCheckboxContainer() {
     return newContainer;
 };
 
+// Combine components and append row to the <ul>
+
 function createListItem() {
     const newItem = document.createElement("li");
     newItem.appendChild(createCheckboxContainer());
     newItem.appendChild(createTextfield());
     newItem.appendChild(createOptionMenu());
-  
     return newItem;
 };
 
@@ -132,7 +135,8 @@ function appendItem() {
     inputField.value = "";
 };
 
-//----------- lisäysmetodit loppuu -----------//
+
+
 
 
 //**************************************//
