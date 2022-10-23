@@ -193,3 +193,17 @@ button {
     width: fit-content;
     height: 2rem;
 }
+
+#clear-completed-btn {
+    display: none;
+    align-self: center; 
+    width: fit-content;
+    height: 2rem
+}
+#counters {
+    justify-content: space-evenly;
+}
+#counters > * {
+    font-size: 0.7rem;
+
+}
