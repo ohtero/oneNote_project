@@ -218,7 +218,7 @@ const clearCompleted = () => {
     currentCompleted = 0;
     updateCounter(completed, currentCompleted);
     updateCounter(CompletedAll, totalCompleted);
-    if (!document.getElementById('item-list').children.length) {
+    if (!document.getElementById('item-list').hasChildNodes()) {
         document.getElementById('clear-completed-btn').style.display = 'none';
     }
 };
@@ -230,12 +230,10 @@ document.getElementById('clear-completed-btn').addEventListener('click', clearCo
 
 function closeMenu(e) {
     const options = document.querySelectorAll('.option-items-open');
-if (!e.target.matches('.option-menu *')) {
-        if (options.length > 0) {
-            for (var i = 0; i < options.length; i++) {
-                options[i].classList.remove('option-items-open');   
-            }
-        }      
+if (!e.target.matches('.option-menu *') && options.length > 0) {
+        for (var i = 0; i < options.length; i++) {
+            options[i].classList.remove('option-items-open');   
+        }     
     }
 };
 
