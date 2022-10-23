@@ -1,6 +1,4 @@
 
-
-
 const inputField = document.getElementById("input-textfield"); 
 const modal = document.getElementById('alert-modal');    
 
@@ -16,12 +14,41 @@ document.getElementById('close-modal-btn').addEventListener('click', () => modal
 document.getElementById("add-item-btn").addEventListener("click", checkFieldValue);
 
 
+var toDoCount = 0;
+var currentCompleted = 0;
+var totalCompleted = 0;
+
+const toDoCounter = document.getElementById('todo-count');
+const completed = document.getElementById('completed-count');
+const CompletedAll = document.getElementById('total-completed-count');
+
+const updateCounter = (counter, value) => counter.innerHTML = value;    // Updateds values of the different counters
+
+updateCounter(toDoCounter, toDoCount);
+updateCounter(completed, currentCompleted);
+updateCounter(CompletedAll, totalCompleted);
+
+
 /*--- CREATE LIST ROW AND ITS' COMPONENTS ---*/
 
 // Del button
 
 function deleteRow() {  // Delete functionality                                                           
-    this.parentElement.parentElement.parentElement.remove();
+    this.closest('li').remove();
+    const textfield = this.closest('.option-menu').previousElementSibling;
+    if (textfield.classList.contains('completed')) {
+        currentCompleted -= 1;
+        totalCompleted +=1;
+        updateCounter(completed, currentCompleted);
+        updateCounter(CompletedAll, totalCompleted);
+    } else {
+        toDoCount -= 1;
+        updateCounter(toDoCounter, toDoCount);
+    }
+    if (!document.getElementById('item-list').children.length) {
+        document.getElementById('clear-completed-btn').style.display = 'none';
+    }
+
 }; 
 
 function createDelImg() {
@@ -41,9 +68,10 @@ function createDelButton() {
 // 'Edit' button
 
 function editText() {   // Edit functionality
-    const textfield = this.parentElement.parentElement.previousElementSibling;
+    const textfield = this.closest('.option-menu').previousElementSibling;
     textfield.removeAttribute('disabled');
     textfield.focus();
+
 };
 
 function createEditImg() {
@@ -64,7 +92,7 @@ function createEditButton() {
 // 'Options/ellipses' button
 
 function showOptions() {    // Open options functionality
-    this.nextElementSibling.classList.toggle('option-items-open')
+    this.nextElementSibling.classList.toggle('option-items-open');
 };
 
 function createEllipsesImg() {
@@ -77,6 +105,7 @@ function createOptionBtn() {
     const newBtn = document.createElement('button');
     newBtn.className = 'option-btn';
     newBtn.addEventListener('click', showOptions);
+
     newBtn.appendChild(createEllipsesImg());
     return newBtn;
 };
@@ -131,6 +160,15 @@ function createTextfield() {
 function toggleState() {
     const textfield = this.parentElement.nextElementSibling;
     textfield.classList.toggle('completed');
+    if (textfield.classList.contains('completed')) {
+        currentCompleted += 1;
+        toDoCount -= 1;
+    } else {currentCompleted -= 1;
+            toDoCount += 1;
+    }
+    updateCounter(toDoCounter, toDoCount);
+    updateCounter(completed, currentCompleted);
+    
 };
 
 function createCheckbox() {
@@ -163,4 +201,46 @@ function appendItem() {
     const itemList = document.getElementById("item-list");
     itemList.appendChild(createListItem());
     inputField.value = "";
+    toDoCount += 1;
+    updateCounter(toDoCounter, toDoCount);
+    document.getElementById('clear-completed-btn').style.display = 'flex';
+
 };
+
+// Clears all list rows that are marked completed
+
+const clearCompleted = () => {
+    const completedItems = document.querySelectorAll('.completed');
+    for (var i = 0; i < completedItems.length; i++) {
+        completedItems[i].closest('li').remove();
+    }
+    totalCompleted += currentCompleted;
+    currentCompleted = 0;
+    updateCounter(completed, currentCompleted);
+    updateCounter(CompletedAll, totalCompleted);
+    if (!document.getElementById('item-list').children.length) {
+        document.getElementById('clear-completed-btn').style.display = 'none';
+    }
+};
+
+document.getElementById('clear-completed-btn').addEventListener('click', clearCompleted);
+
+
+// Closes the line option menu if clicking outside of menu
+
+function closeMenu(e) {
+    const options = document.querySelectorAll('.option-items-open');
+if (!e.target.matches('.option-menu *')) {
+        if (options.length > 0) {
+            for (var i = 0; i < options.length; i++) {
+                options[i].classList.remove('option-items-open');   
+            }
+        }      
+    }
+};
+
+document.addEventListener('click', closeMenu);
+
+
+
+
