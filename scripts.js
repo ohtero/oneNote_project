@@ -204,7 +204,6 @@ function appendItem() {
     toDoCount += 1;
     updateCounter(toDoCounter, toDoCount);
     document.getElementById('clear-completed-btn').style.display = 'flex';
-
 };
 
 // Clears all list rows that are marked completed
