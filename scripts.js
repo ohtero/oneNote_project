@@ -6,7 +6,7 @@ const toDoCounter = document.getElementById('todo-count');
 const completed = document.getElementById('completed-count');
 const CompletedAll = document.getElementById('total-completed-count');
 
-const updateCounter = (counter, value) => counter.innerHTML = value;    // Updateds values of the different counters
+const updateCounter = (counter, value) => counter.innerHTML = value;    // Updates values of the different counters
 
 updateCounter(toDoCounter, toDoCount);
 updateCounter(completed, currentCompleted);
