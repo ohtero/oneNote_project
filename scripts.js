@@ -215,6 +215,7 @@ const clearCompleted = () => {
     currentCompleted = 0;
     updateCounter(completed, currentCompleted);
     updateCounter(CompletedAll, totalCompleted);
+    hideBtn.innerHTML = 'Hide completed';    
     if (!document.getElementById('item-list').children.length) {
         document.getElementById('completed-btn-cont').style.display = 'none';
     }
