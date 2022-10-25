@@ -195,12 +195,21 @@ function appendItem() {
 const inputField = document.getElementById("input-textfield"); 
 const modal = document.getElementById('alert-modal');    
 
+
 function checkFieldValue() {
     if (inputField.value.length > 0) {
         appendItem();
     } else modal.showModal();  
+    inputField.focus();
 };
 
+function onEnterPress(e){
+    if (e.key == 'Enter') {
+        checkFieldValue();
+    }
+};
+
+inputField.addEventListener('keypress', onEnterPress);
 document.getElementById('close-modal-btn').addEventListener('click', () => modal.close());  
 document.getElementById("add-item-btn").addEventListener("click", checkFieldValue);
 
