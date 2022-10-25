@@ -51,12 +51,9 @@ ul {
 
 li {
     display: flex;
-
     background-color: white;
     height: 2rem;
     list-style: none;
-
-
 }
 
 .input-container {
@@ -131,6 +128,10 @@ li {
     color: #777;
 }
 
+.hidden {
+    display: none;
+}
+
 /* button styling */
 
 button {
@@ -194,11 +195,16 @@ button {
     height: 2rem;
 }
 
-#clear-completed-btn {
+#completed-btn-cont {
     display: none;
-    align-self: center; 
-    width: fit-content;
-    height: 2rem
+    gap: 2rem;
+}
+
+
+#clear-completed-btn,
+#hide-completed-btn {
+    width: 6rem;
+    height: 2rem;
 }
 #counters {
     justify-content: space-evenly;

@@ -1,19 +1,3 @@
-
-const inputField = document.getElementById("input-textfield"); 
-const modal = document.getElementById('alert-modal');    
-
-// Checks if input value is > 0. If not, opens error modal
-
-function checkFieldValue() {
-    if (inputField.value.length > 0) {
-        appendItem();
-    } else modal.showModal();  
-};
-
-document.getElementById('close-modal-btn').addEventListener('click', () => modal.close());  
-document.getElementById("add-item-btn").addEventListener("click", checkFieldValue);
-
-
 var toDoCount = 0;
 var currentCompleted = 0;
 var totalCompleted = 0;
@@ -46,7 +30,7 @@ function deleteRow() {  // Delete functionality
         updateCounter(toDoCounter, toDoCount);
     }
     if (!document.getElementById('item-list').children.length) {
-        document.getElementById('clear-completed-btn').style.display = 'none';
+        document.getElementById('completed-btn-cont').style.display = 'none';
     }
 
 }; 
@@ -203,8 +187,22 @@ function appendItem() {
     inputField.value = "";
     toDoCount += 1;
     updateCounter(toDoCounter, toDoCount);
-    document.getElementById('clear-completed-btn').style.display = 'flex';
+    document.getElementById('completed-btn-cont').style.display = 'flex';
 };
+
+// Checks if input value is > 0. If not, opens error modal. Else appends new list row
+
+const inputField = document.getElementById("input-textfield"); 
+const modal = document.getElementById('alert-modal');    
+
+function checkFieldValue() {
+    if (inputField.value.length > 0) {
+        appendItem();
+    } else modal.showModal();  
+};
+
+document.getElementById('close-modal-btn').addEventListener('click', () => modal.close());  
+document.getElementById("add-item-btn").addEventListener("click", checkFieldValue);
 
 // Clears all list rows that are marked completed
 
@@ -217,13 +215,30 @@ const clearCompleted = () => {
     currentCompleted = 0;
     updateCounter(completed, currentCompleted);
     updateCounter(CompletedAll, totalCompleted);
-    if (!document.getElementById('item-list').hasChildNodes()) {
-        document.getElementById('clear-completed-btn').style.display = 'none';
+    if (!document.getElementById('item-list').children.length) {
+        document.getElementById('completed-btn-cont').style.display = 'none';
     }
 };
 
 document.getElementById('clear-completed-btn').addEventListener('click', clearCompleted);
 
+// Hides completed items
+
+const hideBtn = document.getElementById('hide-completed-btn')
+
+const toggleCompletedVisibility = () => {
+    const completedItems = document.querySelectorAll('.completed');
+        for (var i = 0; i < completedItems.length; i++) {
+            completedItems[i].closest('li').classList.toggle('hidden');
+        }  
+        if (hideBtn.innerHTML === 'Hide completed' && completedItems.length > 0) {
+            hideBtn.innerHTML = 'Show completed';
+        } else {
+            hideBtn.innerHTML = 'Hide completed';    
+        }
+};
+
+hideBtn.addEventListener('click', toggleCompletedVisibility);
 
 // Closes the line option menu if clicking outside of menu
 
