@@ -266,7 +266,7 @@ document.addEventListener('click', closeMenu);
 
 const data = {item0: 'yksi', item1:'kaksi'};
 
-fetch('https://json-db-ohtero.herokuapp.com', {
+fetch('https://json-db-ohtero.herokuapp.com/people', {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json' 
