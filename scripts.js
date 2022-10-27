@@ -264,5 +264,11 @@ if (!e.target.matches('.option-menu *') && options.length > 0) {
 document.addEventListener('click', closeMenu);
 
 
+const data = {item0: 'yksi', item1:'kaksi'};
+const url = 'https://json-db-ohtero.herokuapp.com';
+
+xmlhttp.open('POST', url);
+xmlhttp.setRequestHeader('Content-Type', 'application/json');
+xmlhttp.send(data);
 
 
