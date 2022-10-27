@@ -264,7 +264,7 @@ if (!e.target.matches('.option-menu *') && options.length > 0) {
 document.addEventListener('click', closeMenu);
 
 
-const data = {item0: 'yksi', item1:'kaksi'};
+var data = ['yksi','kaksi'];
 
 fetch('https://json-db-ohtero.herokuapp.com/people', {
     method: 'POST',
