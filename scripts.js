@@ -190,6 +190,9 @@ function appendItem() {
     document.getElementById('completed-btn-cont').style.display = 'flex';
 };
 
+
+/* END LIST COMPONENT CREATION */
+
 // Checks if input value is > 0. If not, opens error modal. Else appends new list row
 
 const inputField = document.getElementById("input-textfield"); 
