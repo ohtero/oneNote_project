@@ -62,6 +62,7 @@ li {
 }
 
 #input-textfield {  
+    font-size: 1rem;
     height: 2rem;
 }
 
@@ -78,7 +79,7 @@ li {
 
 @media screen and (min-width: 530px) {
     .list-wrapper {
-        max-width: 500px;
+        max-width: 25rem;
     }
 }
 
@@ -108,7 +109,7 @@ li {
     transform: rotate(45deg);
     width: 0.5rem;
     height: 1rem;
-    top: 6px;
+    top: 0.4rem;
 }
 .list-checkbox:checked::after {
     display: flex;
@@ -117,6 +118,7 @@ li {
 .list-textfield {
     flex: 1;
     flex-basis: 90%;
+    font-size: 1rem;
     background-color: #fff;
     height: inherit;
     position: relative;
@@ -135,6 +137,7 @@ li {
 /* button styling */
 
 button {
+    font-size: 0.8rem;
     width: 2rem;
     display: flex;
     justify-content: center;
@@ -155,8 +158,6 @@ button {
     display: flex;
     flex: 1;
     flex-basis: 2rem;
- 
-
 }
 
 .option-btn {
@@ -197,13 +198,13 @@ button {
 
 #completed-btn-cont {
     display: none;
-    gap: 2rem;
+    gap: 1rem;
 }
 
 
 #clear-completed-btn,
 #hide-completed-btn {
-    width: 6rem;
+    flex: 1;
     height: 2rem;
 }
 #counters {
