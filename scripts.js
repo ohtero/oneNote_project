@@ -265,12 +265,12 @@ document.addEventListener('click', closeMenu);
 
 
 const data = {item0: 'yksi', item1:'kaksi'};
-const url = 'https://json-db-ohtero.herokuapp.com';
+
 
 const sendData = () => {
-    xmlhttp.open('POST', url);
+    xmlhttp.open('POST', 'https://json-db-ohtero.herokuapp.com');
     xmlhttp.setRequestHeader('Content-Type', 'application/json');
-    xmlhttp.send(data);
+    xmlhttp.send(JSON.stringify(data));
 };
 
 sendData();
