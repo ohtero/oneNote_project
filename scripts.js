@@ -267,10 +267,9 @@ document.addEventListener('click', closeMenu);
 const data = {item0: 'yksi', item1:'kaksi'};
 
 
-const sendData = () => {
-    xmlhttp.open('POST', 'https://json-db-ohtero.herokuapp.com');
-    xmlhttp.setRequestHeader('Content-Type', 'application/json');
-    xmlhttp.send(JSON.stringify(data));
-};
 
-sendData();
+
+const xhr = new XMLHttpRequest();
+xhr.open("POST", "https://json-db-ohtero.herokuapp.com")
+xhr.setRequestHeader("Content-type", "application/json");
+xhr.send(JSON.stringify(data));
