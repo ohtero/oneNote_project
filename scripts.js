@@ -269,9 +269,10 @@ document.addEventListener('click', closeMenu);
 
 var data = ['yksi','kaksi'];
 
-fetch('https://json-db-ohtero.herokuapp.com/people', {
+fetch('https://itemlist-json-server.onrender.com/items', {
     method: 'POST',
     headers: {
+        'mode': 'no-cors',
         'Content-Type': 'application/json' 
     },
     body: JSON.stringify(data)
