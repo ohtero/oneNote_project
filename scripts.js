@@ -272,7 +272,7 @@ var data = ['yksi','kaksi'];
 fetch('https://itemlist-json-server.onrender.com/items', {
     method: 'POST',
     headers: {
-        'mode': 'no-cors',
+        'mode': 'cors',
         'Content-Type': 'application/json' 
     },
     body: JSON.stringify(data)
