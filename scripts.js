@@ -13,6 +13,17 @@ updateCounter(completed, currentCompleted);
 updateCounter(CompletedAll, totalCompleted);
 
 
+
+
+function saveToLocal(value) {
+    var localData = localStorage.getItem('items');
+    savedList = localData ? localData.split(',') : [];
+    savedList.push(value);
+    localStorage.setItem('items', savedList.toString()); 
+};
+
+
+
 /*--- CREATE LIST ROW AND ITS' COMPONENTS ---*/
 
 // Del button
@@ -184,6 +195,7 @@ function createListItem() {
 function appendItem() {                                        
     const itemList = document.getElementById("item-list");
     itemList.appendChild(createListItem());
+    saveToLocal(inputField.value);
     inputField.value = "";
     toDoCount += 1;
     updateCounter(toDoCounter, toDoCount);
