@@ -15,22 +15,49 @@ updateCounter(CompletedAll, totalCompleted);
 
 
 
-function saveToLocal(value) {
-    var localData = localStorage.getItem('items');
-    savedList = localData ? localData.split(',') : [];
+
+const getLocalData = () => {        // Loads saved list items on page load
+    let localData = localStorage.getItem('items');
+    if (localData){
+        let savedList = localData.split(',');
+        savedList.forEach(element => {appendItem(element)});
+    }
+};
+
+window.addEventListener('load', getLocalData);
+
+const saveToLocal = value => {      // Saves list items to local storage
+    let localData = localStorage.getItem('items');
+    let savedList = localData ? localData.split(',') : [];
     savedList.push(value);
     localStorage.setItem('items', savedList.toString()); 
 };
 
+const deleteFromLocal = item => {       // Delete items from local Storage
+    let localData = localStorage.getItem('items');
+    let savedList = localData.split(',');
+    let index = savedList.indexOf(item.value);
+    savedList.splice(index, 1);
+    localStorage.setItem('items', savedList.toString());
+};
 
+const editLocalValue = (value) => {     // Change item value in local storage when value is edited
+    let localData = localStorage.getItem('items');
+    let savedList = localData.split(',');
+    let index = savedList.indexOf(originalTextfieldValue);  // Checks the index of the un-edited value
+    savedList.splice(index, 1, value);
+    localStorage.setItem('items', savedList.toString());
+    originalTextfieldValue = "";
+}
 
 /*--- CREATE LIST ROW AND ITS' COMPONENTS ---*/
 
 // Del button
 
 function deleteRow() {  // Delete functionality                                                           
-    this.closest('li').remove();
     const textfield = this.closest('.option-menu').previousElementSibling;
+    this.closest('li').remove();
+    deleteFromLocal(textfield);
     if (textfield.classList.contains('completed')) {
         currentCompleted -= 1;
         totalCompleted +=1;
@@ -43,19 +70,11 @@ function deleteRow() {  // Delete functionality
     if (!document.getElementById('item-list').children.length) {
         document.getElementById('completed-btn-cont').style.display = 'none';
     }
-
 }; 
-
-function createDelImg() {
-    const newImg = document.createElement('i');
-    newImg.className = 'bi bi-trash';
-    return newImg;
-};
 
 function createDelButton() {                                   
     const newBtn = document.createElement("button");
-    newBtn.className = "del-row-btn";
-    newBtn.appendChild(createDelImg());
+    newBtn.className = "del-row-btn bi bi-trash";
     newBtn.addEventListener("click", deleteRow);
     return newBtn;
 };
@@ -69,16 +88,9 @@ function editText() {   // Edit functionality
 
 };
 
-function createEditImg() {
-    const newImg = document.createElement('i');
-    newImg.className = 'bi bi-pencil';
-    return newImg;
-};
-
 function createEditButton() {                                   
     const newBtn = document.createElement("button");
-    newBtn.className = "edit";
-    newBtn.appendChild(createEditImg());
+    newBtn.className = "edit bi bi-pencil";
     newBtn.addEventListener("click", editText);
     newBtn.addEventListener('click', function() {this.parentElement.classList.remove('option-items-open');});   // Closes menu when 'Edit' is clicked
     return newBtn;
@@ -90,18 +102,10 @@ function showOptions() {    // Open options functionality
     this.nextElementSibling.classList.toggle('option-items-open');
 };
 
-function createEllipsesImg() {
-    const newImg = document.createElement('i');
-    newImg.className = 'bi bi-three-dots';
-    return newImg;
-};
-
 function createOptionBtn() {
     const newBtn = document.createElement('button');
-    newBtn.className = 'option-btn';
+    newBtn.className = 'option-btn bi bi-three-dots';
     newBtn.addEventListener('click', showOptions);
-
-    newBtn.appendChild(createEllipsesImg());
     return newBtn;
 };
 
@@ -115,7 +119,6 @@ function createOptionItems() {
     return newItems;
 };
 
-
 // Option menu container
 
 function createOptionMenu() {
@@ -128,9 +131,13 @@ function createOptionMenu() {
 
 // Textfield
 
+var originalTextfieldValue = "";
+
 function disableTextfield() {   // Locks textfield after editing
-    const textfield = this;
-    textfield.setAttribute('disabled', '');   
+    this.setAttribute('disabled', '');
+    if (this.value !== originalTextfieldValue) {
+        editLocalValue(this.value);     // Replaces old value with edited value
+    }
 };
 
 function dropFocus (e) {    // Blur textfield
@@ -139,12 +146,13 @@ function dropFocus (e) {    // Blur textfield
     };
 };
 
-function createTextfield() {
+function createTextfield(value) {   // Takes value from the text input field or saved items from Local Storage
     const newField = document.createElement('input');
     newField.type = 'text';
     newField.className = 'list-textfield';
-    newField.value = inputField.value;
+    newField.value = value;
     newField.setAttribute('disabled', '');
+    newField.addEventListener('focus', function setOrigValue() {originalTextfieldValue = this.value;}); // Saves the original textfield value before enabling editing
     newField.addEventListener('blur', disableTextfield);
     newField.addEventListener('keydown', dropFocus);
     return newField;
@@ -184,19 +192,19 @@ function createCheckboxContainer() {
 
 // Combine components and append new <li> to the <ul>
 
-function createListItem() {
+const inputField = document.getElementById("input-textfield"); 
+
+function createListItem(value) {
     const newItem = document.createElement("li");
     newItem.appendChild(createCheckboxContainer());
-    newItem.appendChild(createTextfield());
+    newItem.appendChild(createTextfield(value));
     newItem.appendChild(createOptionMenu());
     return newItem;
 };
 
-function appendItem() {                                        
+function appendItem(value) {                                        
     const itemList = document.getElementById("item-list");
-    itemList.appendChild(createListItem());
-    saveToLocal(inputField.value);
-    inputField.value = "";
+    itemList.appendChild(createListItem(value));
     toDoCount += 1;
     updateCounter(toDoCounter, toDoCount);
     document.getElementById('completed-btn-cont').style.display = 'flex';
@@ -207,13 +215,14 @@ function appendItem() {
 
 // Checks if input value is > 0. If not, opens error modal. Else appends new list row
 
-const inputField = document.getElementById("input-textfield"); 
 const modal = document.getElementById('alert-modal');    
 
 
 function checkFieldValue() {
     if (inputField.value.length > 0) {
-        appendItem();
+        saveToLocal(inputField.value);  // Saves to local storage
+        appendItem(inputField.value);
+        inputField.value = "";
     } else modal.showModal();  
     inputField.focus();
 };
@@ -234,6 +243,7 @@ const clearCompleted = () => {
     const completedItems = document.querySelectorAll('.completed');
     for (var i = 0; i < completedItems.length; i++) {
         completedItems[i].closest('li').remove();
+        deleteFromLocal(completedItems[i]);     // Deletes item values from local storage
     }
     totalCompleted += currentCompleted;
     currentCompleted = 0;
