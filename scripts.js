@@ -17,34 +17,60 @@ updateCounter(CompletedAll, totalCompleted);
 
 
 const getLocalData = () => {        // Loads saved list items on page load
-    let localData = localStorage.getItem('items');
+    const localData = localStorage.getItem('items');
     if (localData){
-        let savedList = localData.split(',');
+        const savedList = localData.split(',');
         savedList.forEach(element => {appendItem(element)});
+    }
+};
+const getLocalCompletedData = () => {        // Loads saved completed list items on page load
+    const localData = localStorage.getItem('completedItems');
+    if (localData){
+        const savedList = localData.split(',');
+        savedList.forEach(element => {checkIfCompleted(element)});      // Compares to existing list values and if they match, sets them to completed state
+    }
+};
+
+const checkIfCompleted = arrValue => {
+    const listItems = document.querySelectorAll('.list-textfield');
+    for (var i = 0; i < listItems.length; i++) {
+        if (listItems[i].value == arrValue) {
+            listItems[i].classList.add('completed');
+            listItems[i].previousElementSibling.firstElementChild.checked = true;
+        }
     }
 };
 
 window.addEventListener('load', getLocalData);
+window.addEventListener('load', getLocalCompletedData);
 
 const saveToLocal = value => {      // Saves list items to local storage
-    let localData = localStorage.getItem('items');
-    let savedList = localData ? localData.split(',') : [];
+    const localData = localStorage.getItem('items');
+    const savedList = localData ? localData.split(',') : [];
     savedList.push(value);
     localStorage.setItem('items', savedList.toString()); 
 };
 
 const deleteFromLocal = item => {       // Delete items from local Storage
-    let localData = localStorage.getItem('items');
-    let savedList = localData.split(',');
-    let index = savedList.indexOf(item.value);
+    const localData = localStorage.getItem('items');
+    const savedList = localData.split(',');
+    const index = savedList.indexOf(item.value);
     savedList.splice(index, 1);
     localStorage.setItem('items', savedList.toString());
+    const completedLocalData = localStorage.getItem('completedItems');
+    const savedCompletedList = completedLocalData.split(','); 
+    if (savedCompletedList.includes(item.value)) {
+        const indexOfCompleted = savedCompletedList.indexOf(item.value);
+        savedCompletedList.splice(indexOfCompleted, 1);
+        localStorage.setItem('completedItems', savedCompletedList.toString());     
+    } 
+
 };
 
 const editLocalValue = (value) => {     // Change item value in local storage when value is edited
-    let localData = localStorage.getItem('items');
-    let savedList = localData.split(',');
-    let index = savedList.indexOf(originalTextfieldValue);  // Checks the index of the un-edited value
+    const localData = localStorage.getItem('items');
+    const savedList = localData.split(',');
+    const index = savedList.indexOf(originalTextfieldValue);  // Checks the index of the un-edited value
     savedList.splice(index, 1, value);
     localStorage.setItem('items', savedList.toString());
     originalTextfieldValue = "";
@@ -134,7 +160,7 @@ function createOptionMenu() {
 var originalTextfieldValue = "";
 
 function disableTextfield() {   // Locks textfield after editing
-    this.setAttribute('disabled', '');
+    this.disabled = true;
     if (this.value !== originalTextfieldValue) {
         editLocalValue(this.value);     // Replaces old value with edited value
     }
@@ -151,7 +177,7 @@ function createTextfield(value) {   // Takes value from the text input field or 
     newField.type = 'text';
     newField.className = 'list-textfield';
     newField.value = value;
-    newField.setAttribute('disabled', '');
+    newField.disabled = true;
     newField.addEventListener('focus', function setOrigValue() {originalTextfieldValue = this.value;}); // Saves the original textfield value before enabling editing
     newField.addEventListener('blur', disableTextfield);
     newField.addEventListener('keydown', dropFocus);
@@ -160,13 +186,30 @@ function createTextfield(value) {   // Takes value from the text input field or 
 
 // Checkbox
 
+const addCompletedToLocal = value => {
+    let localData = localStorage.getItem('completedItems');
+    let savedList = localData ? localData.split(',') : [];
+    savedList.push(value);
+    localStorage.setItem('completedItems', savedList);    
+};
+
+const removeCompletedFromLocal = value => {
+    let localData = localStorage.getItem('completedItems'); 
+    let savedList = localData.split(',');
+    let index = savedList.indexOf(value);
+    savedList.splice(index, 1);  
+    localStorage.setItem('completedItems', savedList); 
+}
+
 function toggleState() {
     const textfield = this.parentElement.nextElementSibling;
     textfield.classList.toggle('completed');
     if (textfield.classList.contains('completed')) {
+        addCompletedToLocal(textfield.value);
         currentCompleted += 1;
         toDoCount -= 1;
-    } else {currentCompleted -= 1;
+    } else {removeCompletedFromLocal(textfield.value);
+            currentCompleted -= 1;
             toDoCount += 1;
     }
     updateCounter(toDoCounter, toDoCount);
