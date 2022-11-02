@@ -266,15 +266,20 @@ function appendItem(value) {
 
 /*---- END LIST ROW CONSTRUCTION ----*/
 
+const inputContainer = document.querySelector('.input-container');
 const inputField = document.getElementById("input-textfield"); 
 const modal = document.getElementById('alert-modal');    
 
-function checkFieldValue() {        // Checks if input value is > 0. If not, opens error modal. Else appends new list row
-    if (inputField.value.length > 0) {
+function checkFieldValue() {        // Checks if input value is > 3. If not, shows error
+    if (inputField.value.length > 3 ) {
         saveToLocal(inputField.value);  // Saves to local storage
         appendItem(inputField.value);
         inputField.value = "";
-    } else modal.showModal();  
+    } else {inputContainer.classList.add('input-error');
+        inputField.value = "";
+        inputField.style.background = '#fcc';
+        setTimeout(() => {inputContainer.classList.remove('input-error'); inputField.style.background = '#fff';}, 3000);    // Removes error popup after 3s
+    }
     inputField.focus();
 };
 
@@ -284,9 +289,17 @@ function onEnterPress(e){
     }
 };
 
+const removeError = (e) => {    // Removes error popup after action
+    if (inputContainer.classList.contains('input-error') && e.key != 'Enter') {
+        inputContainer.classList.remove('input-error');
+        inputField.style.background = '#fff';
+    }
+};
+
 inputField.addEventListener('keypress', onEnterPress);
+inputField.addEventListener('keypress', removeError);
 document.getElementById("add-item-btn").addEventListener("click", checkFieldValue);     
-document.getElementById('close-modal-btn').addEventListener('click', () => modal.close());      // Closes error modal  
+
 
 
 const clearCompleted = () => {      // Clears all list rows that are marked completed
@@ -337,15 +350,3 @@ if (!e.target.matches('.option-menu *') && options.length > 0) {
 };
 
 document.addEventListener('click', closeMenu);
-
-
-var data = ['yksi','kaksi'];
-
-fetch('https://itemlist-json-server.onrender.com/items', {
-    method: 'POST',
-    headers: {
-        'mode': 'cors',
-        'Content-Type': 'application/json' 
-    },
-    body: JSON.stringify(data)
-})
