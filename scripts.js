@@ -1,33 +1,41 @@
-var toDoCount = 0;
-var currentCompleted = 0;
-var totalCompleted = 0;
+/*---- LOCAL STORAGE MANIPULATION ----*/
 
 const toDoCounter = document.getElementById('todo-count');
 const completed = document.getElementById('completed-count');
-const CompletedAll = document.getElementById('total-completed-count');
+const completedAll = document.getElementById('total-completed-count');
+
+var counters;
 
 const updateCounter = (counter, value) => counter.innerHTML = value;    // Updates values of the different counters
 
-updateCounter(toDoCounter, toDoCount);
-updateCounter(completed, currentCompleted);
-updateCounter(CompletedAll, totalCompleted);
+const getCounterFromLocal = () => {         // Gets counter data from Local Storage
+    const localCounterData = JSON.parse(localStorage.getItem('counters'));
+    const savedCounters = localCounterData ? localCounterData : {toDo: 0, completed: 0, completedAll: 0};
+    counters = savedCounters;
+    counterValues = Object.values(savedCounters);  
+    updateCounter(toDoCounter, counterValues[0]);
+    updateCounter(completed, counterValues[1]);
+    updateCounter(completedAll, counterValues[2]);
+ 
+};
 
+const updateCountersToLocal = () => localStorage.setItem('counters', JSON.stringify(counters));     // Updates counter data to Local Storage
 
-
+window.addEventListener('load', getCounterFromLocal);
 
 
 const getLocalData = () => {        // Loads saved list items on page load
-    const localData = localStorage.getItem('items');
+    const localData = JSON.parse(localStorage.getItem('items'));
     if (localData){
-        const savedList = localData.split(',');
+        const savedList = Array.from(localData);
         savedList.forEach(element => {appendItem(element)});
     }
 };
 const getLocalCompletedData = () => {        // Loads saved completed list items on page load
-    const localData = localStorage.getItem('completedItems');
-    if (localData){
-        const savedList = localData.split(',');
-        savedList.forEach(element => {checkIfCompleted(element)});      // Compares to existing list values and if they match, sets them to completed state
+    const completedLocalData = JSON.parse(localStorage.getItem('completedItems'));
+    if (completedLocalData){
+        const savedList = Array.from(completedLocalData);
+        savedList.forEach(element => {checkIfCompleted(element)});      // Compares to existing list item values and if they match, sets them to completed state
     }
 };
 
@@ -45,57 +53,75 @@ window.addEventListener('load', getLocalData);
 window.addEventListener('load', getLocalCompletedData);
 
 const saveToLocal = value => {      // Saves list items to local storage
-    const localData = localStorage.getItem('items');
-    const savedList = localData ? localData.split(',') : [];
+    const localData = JSON.parse(localStorage.getItem('items'));
+    const savedList = localData ? Array.from(localData) : [];
     savedList.push(value);
-    localStorage.setItem('items', savedList.toString()); 
+    localStorage.setItem('items', JSON.stringify(savedList)); 
 };
 
-const deleteFromLocal = item => {       // Delete items from local Storage
-    const localData = localStorage.getItem('items');
-    const savedList = localData.split(',');
+const deleteFromLocal = item => {       // Delete items from local Storage when 'Clear completed' or 'delete' on specific list items is clicked
+    const localData = JSON.parse(localStorage.getItem('items'));
+    const savedList = Array.from(localData);
     const index = savedList.indexOf(item.value);
     savedList.splice(index, 1);
-    localStorage.setItem('items', savedList.toString());
-    const completedLocalData = localStorage.getItem('completedItems');
-    const savedCompletedList = completedLocalData.split(','); 
-    if (savedCompletedList.includes(item.value)) {
+    localStorage.setItem('items', JSON.stringify(savedList));
+    const completedLocalData = JSON.parse(localStorage.getItem('completedItems'));
+    const savedCompletedList = Array.from(completedLocalData);
+    if (savedCompletedList.includes(item.value)) {              // If item is included in Completed Items, delete it from there also
         const indexOfCompleted = savedCompletedList.indexOf(item.value);
         savedCompletedList.splice(indexOfCompleted, 1);
-        localStorage.setItem('completedItems', savedCompletedList.toString());     
+        localStorage.setItem('completedItems', JSON.stringify(savedCompletedList));     
     } 
 
 };
 
 const editLocalValue = (value) => {     // Change item value in local storage when value is edited
-    const localData = localStorage.getItem('items');
-    const savedList = localData.split(',');
+    const localData = JSON.parse(localStorage.getItem('items'));
+    const savedList = Array.from(localData);
     const index = savedList.indexOf(originalTextfieldValue);  // Checks the index of the un-edited value
     savedList.splice(index, 1, value);
-    localStorage.setItem('items', savedList.toString());
+    localStorage.setItem('items', JSON.stringify(savedList));
     originalTextfieldValue = "";
 }
 
-/*--- CREATE LIST ROW AND ITS' COMPONENTS ---*/
+const addCompletedToLocal = value => {      // Adds completed list items to their own key in Local Storage when clicking checkbox 
+    let localData = JSON.parse(localStorage.getItem('completedItems'));
+    let savedList = localData ? Array.from(localData) : [];
+    savedList.push(value);
+    localStorage.setItem('completedItems', JSON.stringify(savedList));    
+};
+
+const deleteCompletedFromLocal = value => {     // Removes completed list items from their own key in Local Storage when clicking checkbox
+    let localData = JSON.parse(localStorage.getItem('completedItems'));
+    let savedList = Array.from(localData);
+    let index = savedList.indexOf(value);
+    savedList.splice(index, 1);  
+    localStorage.setItem('completedItems', JSON.stringify(savedList));
+}
+
+/*---- END OF LOCAL STORAGE MANIPULATION ----*/
+
+/*---- lIST ROW CONSTRUCTION ----*/
 
 // Del button
 
-function deleteRow() {  // Delete functionality                                                           
+function deleteRow() {  // Delete functionality                                                          
     const textfield = this.closest('.option-menu').previousElementSibling;
     this.closest('li').remove();
     deleteFromLocal(textfield);
     if (textfield.classList.contains('completed')) {
-        currentCompleted -= 1;
-        totalCompleted +=1;
-        updateCounter(completed, currentCompleted);
-        updateCounter(CompletedAll, totalCompleted);
+        counters.completed -= 1;
+        counters.completedAll +=1;
+        updateCounter(completed, counters.completed);
+        updateCounter(completedAll, counters.completedAll);
     } else {
-        toDoCount -= 1;
-        updateCounter(toDoCounter, toDoCount);
+        counters.toDo -= 1;
+        updateCounter(toDoCounter, counters.completed);
     }
     if (!document.getElementById('item-list').children.length) {
         document.getElementById('completed-btn-cont').style.display = 'none';
     }
+    updateCountersToLocal();    // Updates counters in Local Storage
 }; 
 
 function createDelButton() {                                   
@@ -105,7 +131,7 @@ function createDelButton() {
     return newBtn;
 };
 
-// 'Edit' button
+/* 'Edit' button */
 
 function editText() {   // Edit functionality
     const textfield = this.closest('.option-menu').previousElementSibling;
@@ -122,7 +148,7 @@ function createEditButton() {
     return newBtn;
 };
 
-// 'Options/ellipses' button
+/* 'Options/ellipses' button */
 
 function showOptions() {    // Open options functionality
     this.nextElementSibling.classList.toggle('option-items-open');
@@ -135,9 +161,7 @@ function createOptionBtn() {
     return newBtn;
 };
 
-// Items in Option menu
-
-function createOptionItems() {
+function createOptionItems() {      // Items in Option menu
     const newItems = document.createElement('div');
     newItems.className = 'option-items';
     newItems.appendChild(createEditButton());
@@ -145,9 +169,7 @@ function createOptionItems() {
     return newItems;
 };
 
-// Option menu container
-
-function createOptionMenu() {
+function createOptionMenu() {       // Option menu container
     const newMenu = document.createElement('div');
     newMenu.className = 'option-menu';
     newMenu.appendChild(createOptionBtn());   
@@ -155,7 +177,7 @@ function createOptionMenu() {
     return newMenu;
 };
 
-// Textfield
+/* Textfield */
 
 var originalTextfieldValue = "";
 
@@ -184,37 +206,23 @@ function createTextfield(value) {   // Takes value from the text input field or 
     return newField;
 };
 
-// Checkbox
+/* Checkbox */
 
-const addCompletedToLocal = value => {
-    let localData = localStorage.getItem('completedItems');
-    let savedList = localData ? localData.split(',') : [];
-    savedList.push(value);
-    localStorage.setItem('completedItems', savedList);    
-};
-
-const removeCompletedFromLocal = value => {
-    let localData = localStorage.getItem('completedItems'); 
-    let savedList = localData.split(',');
-    let index = savedList.indexOf(value);
-    savedList.splice(index, 1);  
-    localStorage.setItem('completedItems', savedList); 
-}
-
-function toggleState() {
+function toggleState() {        // Toggles list items' completion state when checkbox is clicked
+    counterValues = Object.values(counters);
     const textfield = this.parentElement.nextElementSibling;
     textfield.classList.toggle('completed');
     if (textfield.classList.contains('completed')) {
-        addCompletedToLocal(textfield.value);
-        currentCompleted += 1;
-        toDoCount -= 1;
-    } else {removeCompletedFromLocal(textfield.value);
-            currentCompleted -= 1;
-            toDoCount += 1;
+        addCompletedToLocal(textfield.value);   // Adds completed item values to Local Storage
+        counters.completed += 1;
+        counters.toDo -= 1;
+    } else {deleteCompletedFromLocal(textfield.value);  // Removes completed item values from Local Storage
+    counters.completed -= 1;
+        counters.toDo += 1;
     }
-    updateCounter(toDoCounter, toDoCount);
-    updateCounter(completed, currentCompleted);
-    
+    updateCounter(toDoCounter, counters.toDo);
+    updateCounter(completed, counters.completed);
+    updateCountersToLocal();    // Updates counters in Local Storage   
 };
 
 function createCheckbox() {
@@ -233,9 +241,9 @@ function createCheckboxContainer() {
     return newContainer;
 };
 
-// Combine components and append new <li> to the <ul>
+/* Combine components and append new <li> to the <ul> */
 
-const inputField = document.getElementById("input-textfield"); 
+
 
 function createListItem(value) {
     const newItem = document.createElement("li");
@@ -245,23 +253,23 @@ function createListItem(value) {
     return newItem;
 };
 
-function appendItem(value) {                                        
+function appendItem(value) {                                      
     const itemList = document.getElementById("item-list");
-    itemList.appendChild(createListItem(value));
-    toDoCount += 1;
-    updateCounter(toDoCounter, toDoCount);
+    itemList.appendChild(createListItem(value)); 
+    if (value === inputField.value){
+        counters.toDo += 1;
+    }
+    updateCounter(toDoCounter, counters.toDo);
+    updateCountersToLocal();    // Updates counters in Local Storage
     document.getElementById('completed-btn-cont').style.display = 'flex';
 };
 
+/*---- END LIST ROW CONSTRUCTION ----*/
 
-/* END LIST COMPONENT CREATION */
-
-// Checks if input value is > 0. If not, opens error modal. Else appends new list row
-
+const inputField = document.getElementById("input-textfield"); 
 const modal = document.getElementById('alert-modal');    
 
-
-function checkFieldValue() {
+function checkFieldValue() {        // Checks if input value is > 0. If not, opens error modal. Else appends new list row
     if (inputField.value.length > 0) {
         saveToLocal(inputField.value);  // Saves to local storage
         appendItem(inputField.value);
@@ -277,34 +285,34 @@ function onEnterPress(e){
 };
 
 inputField.addEventListener('keypress', onEnterPress);
-document.getElementById('close-modal-btn').addEventListener('click', () => modal.close());  
-document.getElementById("add-item-btn").addEventListener("click", checkFieldValue);
+document.getElementById("add-item-btn").addEventListener("click", checkFieldValue);     
+document.getElementById('close-modal-btn').addEventListener('click', () => modal.close());      // Closes error modal  
 
-// Clears all list rows that are marked completed
 
-const clearCompleted = () => {
+const clearCompleted = () => {      // Clears all list rows that are marked completed
+    counterValues = Object.values(counters);  
     const completedItems = document.querySelectorAll('.completed');
     for (var i = 0; i < completedItems.length; i++) {
         completedItems[i].closest('li').remove();
         deleteFromLocal(completedItems[i]);     // Deletes item values from local storage
     }
-    totalCompleted += currentCompleted;
-    currentCompleted = 0;
-    updateCounter(completed, currentCompleted);
-    updateCounter(CompletedAll, totalCompleted);
+    counters.completedAll += counters.completed;
+    counters.completed = 0;
+    updateCounter(completed, counters.completed);
+    updateCounter(completedAll, counters.completedAll);
     hideBtn.innerHTML = 'Hide completed';    
     if (!document.getElementById('item-list').children.length) {
         document.getElementById('completed-btn-cont').style.display = 'none';
     }
+    updateCountersToLocal();    // Updates counters in Local Storage
 };
 
 document.getElementById('clear-completed-btn').addEventListener('click', clearCompleted);
 
-// Hides completed items
 
 const hideBtn = document.getElementById('hide-completed-btn')
 
-const toggleCompletedVisibility = () => {
+const toggleCompletedVisibility = () => {       // Hides completed items
     const completedItems = document.querySelectorAll('.completed');
         for (var i = 0; i < completedItems.length; i++) {
             completedItems[i].closest('li').classList.toggle('hidden');
@@ -318,9 +326,8 @@ const toggleCompletedVisibility = () => {
 
 hideBtn.addEventListener('click', toggleCompletedVisibility);
 
-// Closes the line option menu if clicking outside of menu
 
-function closeMenu(e) {
+function closeMenu(e) {     // Closes the line option menu if clicking outside of menu
     const options = document.querySelectorAll('.option-items-open');
 if (!e.target.matches('.option-menu *') && options.length > 0) {
         for (var i = 0; i < options.length; i++) {
