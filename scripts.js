@@ -116,7 +116,7 @@ function deleteRow() {  // Delete functionality
         updateCounter(completedAll, counters.completedAll);
     } else {
         counters.toDo -= 1;
-        updateCounter(toDoCounter, counters.completed);
+        updateCounter(toDoCounter, counters.toDo);
     }
     if (!document.getElementById('item-list').children.length) {
         document.getElementById('completed-btn-cont').style.display = 'none';

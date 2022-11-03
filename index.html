@@ -16,17 +16,10 @@
 <body>
     <main class="flex j-center">
         <div class="list-wrapper flex col">    
-            <div class="input-container flex" >
-                <input type="text" id="input-textfield" class="flex" autocomplete="off"placeholder="Write something to add to the list">
+            <div class="input-container flex" id="input-container" >
+                <input type="text" id="input-textfield" class="flex" autocomplete="off"placeholder="Write something...">
                 <button id="add-item-btn" class="flex a-center j-center"><i class="bi bi-plus"></i></button>
             </div>
-            <dialog id="alert-modal">
-                <div class="flex col a-center">
-                    <p>You need to write something first!</p>
-                    <br>
-                    <button id="close-modal-btn">Got it!</button>
-                </div>
-            </dialog>
                 <ul id="item-list">  
                 <!--<li>
                         <div class="checkbox-container">
