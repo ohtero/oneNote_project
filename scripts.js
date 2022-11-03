@@ -243,8 +243,6 @@ function createCheckboxContainer() {
 
 /* Combine components and append new <li> to the <ul> */
 
-
-
 function createListItem(value) {
     const newItem = document.createElement("li");
     newItem.appendChild(createCheckboxContainer());
@@ -265,6 +263,9 @@ function appendItem(value) {
 };
 
 /*---- END LIST ROW CONSTRUCTION ----*/
+
+
+/*---- APP FUNCTIONS ----*/
 
 const inputContainer = document.querySelector('.input-container');
 const inputField = document.getElementById("input-textfield"); 
@@ -299,7 +300,6 @@ const removeError = (e) => {    // Removes error popup after action
 inputField.addEventListener('keypress', onEnterPress);
 inputField.addEventListener('keypress', removeError);
 document.getElementById("add-item-btn").addEventListener("click", checkFieldValue);     
-
 
 
 const clearCompleted = () => {      // Clears all list rows that are marked completed
