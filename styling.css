@@ -8,7 +8,7 @@
 
 :root {
     font-family: 'Roboto', sans-serif;
-    font-size: 20px;
+    font-size: clamp(16px, 3vw, 20px);
     color: black;
 }
 
@@ -18,11 +18,12 @@ body {
 }
 
 main {
-    padding: 20vh 3vw 0%;
+    padding: 20vh 1vw 0%;
 }
 
 input {
     color: black;
+    
 }
 
 
@@ -50,25 +51,51 @@ input {
 
 
 ul {
-    border: solid 1px #999;
+    /* border-top: solid 0.05rem   #999;
+    border-left: solid 0.05rem   #999;
+    border-bottom: solid 0.05rem   #999; */
     padding: 0;
+
+    background-color: white;
+}
+
+ul > :last-child {
+    border-bottom: solid 0.05rem #999;    
 }
 
 li {
     display: flex;
     background-color: white;
-    height: 2rem;
+    /* height: 2rem; */
     list-style: none;
+    padding: 0.2rem;
+    border-top: solid 0.05rem #999;
+    border-bottom: hidden;
+    border-left: solid 0.05rem #999;
+    border-right: solid 0.05rem #999;
+    border-radius: 0px 6px 6px 0px;
+}
+
+.list-wrapper {
+    background-color: whitesmoke;
+    border: solid 3px #444;
+    border-radius: 6px;
+    max-width: 30rem;
+    min-width: 15rem;
+    justify-content: center;
+    padding: 1rem;
 }
 
 .input-container {
     border: solid 1px #999;
     position: relative;
+    border: solid 0.05rem #999;
+    border-radius: 0px 6px 6px 0px;
+    padding: 0.2rem;
+
 
 }
-/* .input-container[data-tool-tip] { 
-    position: relative;
-}     */
+
 .input-error::after {
     font-size: 0.8rem;
     content: "Length must be at least 4 characters!";
@@ -80,43 +107,37 @@ li {
     border: solid 2px #444;
     left: 17%;
     top: -2rem;
-    transform: scale(1);
-    transition: transform ease-out 100ms;
-    
-    
 }
-
-/* .input-container[data-tool-tip]:hover::after {
-    transform: scale(1);
-    transform-origin: bottom;
-    transition: transform ease-out 100ms;
-} */
 
 #input-textfield {  
     font-size: 1rem;
     height: 2rem;
+    min-width: 1rem;
+    border: hidden;  
+}
+#input-textfield:active {  
+
+    border: hidden;  
 }
 
 
-.list-wrapper {
-    background-color: whitesmoke;
-    border: solid 3px #444;
-    border-radius: 6px;
-    max-width: 100%;
-    min-width: 300px;
-    justify-content: center;
-    padding: 1rem;
 
-}
 
-@media screen and (min-width: 530px) {
+/* @media screen and (min-width: 530px) {
     .list-wrapper {
-        max-width: 25rem;
+        max-width: 30rem;
     }
-}
+} */
 
 .checkbox-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: relative;
+    height: 2rem;
+    width: 2rem;
+    border-right: solid 1px #999;
+
 }
 
 .list-checkbox {
@@ -126,35 +147,41 @@ li {
     -webkit-appearance: none;
     appearance: none;
     background-color: white;
-    margin: 0%;
-    width: 2rem;
-    height: 2rem;
-    border: 1px solid #444;
+
+    width: 1.2rem;
+    height: 1.2rem;
+    border: 1px solid #aaa;
+    border-radius: 10%;
+
 }
 
 .list-checkbox::after{
-    position: absolute;
+
     content: "";
     display: none;
     border: solid #444;
-    border-width: 0px 2px 2px 0px;
-    transform: rotate(45deg);
-    width: 0.5rem;
-    height: 1rem;
-    top: 0.4rem;
+    border-width: 0px 3px 4px 0px;
+    border-radius: 40%;
+    transform: rotate(35deg);
+    width: 0.4rem;
+    height: 1.1rem;
+
 }
 .list-checkbox:checked::after {
     display: flex;
 }
 
 .list-textfield {
-    flex: 1;
-    flex-basis: 90%;
+    padding-left: 0.5rem;
+    min-width: 1rem;
+    flex-grow: 1;
     font-size: 1rem;
     background-color: #fff;
-    height: inherit;
+    /* height: 2rem; */
     position: relative;
-    border-color: #aaccff;
+    border: hidden;
+    /* border-bottom: solid 00.05rem #999; */
+    /* border-color: #aaccff; */
 }
 
 .completed {
@@ -174,9 +201,10 @@ button {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #444;
+    background-color: #467;
     color: white;
-    border:solid 2px #999;
+    border:solid 4px #689;
+    border-radius: 5px;
 }
 
 
@@ -188,45 +216,45 @@ button {
 
 .option-menu {
     display: flex;
-    flex: 1;
-    flex-basis: 2rem;
+    /* flex: 1; */
+    /* flex-basis: 2rem; */
 }
 
 .option-btn {
     display: flex;
-    flex: 1;
-    width: 2rem;
+    /* flex: 1; */
+    flex-grow: 0;
+    flex-basis: 2rem;
+    /* width: 2rem; */
 }
 
 .option-items {
     display: flex;
     flex: 1;
-    background: #ccc;
     overflow: hidden;
     width: 0;
     position: absolute;
     transform: translateX(-100%);
-    height: 2rem;
+    border-radius: 5px;
+    height: 1.95rem;
     opacity: 0%;
     transition-delay: 50ms;
     transition-duration: 100ms;
     transition-timing-function: linear;
     z-index: 1;
-    padding: 0 .15rem;
+    padding: .15rem;
     gap: .15rem;
+
+
 }
 
 .option-items-open {
-    width: 4.5rem;
+    width: 4.3rem;
     opacity: 100%;
     transition-duration: 200ms;
     transition-timing-function: ease-out;
 }
 
-#close-modal-btn {
-    width: fit-content;
-    height: 2rem;
-}
 
 #completed-btn-cont {
     display: none;
