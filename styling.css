@@ -117,34 +117,40 @@ li {
     position: relative;
     height: 2rem;
     width: 2rem;
+    min-width: 31px;
     border-right: solid 1px #999;
 
 }
 
 .list-checkbox {
-    display: flex;
+    position: relative;
+    /* display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center; */
     -webkit-appearance: none;
     appearance: none;
     background-color: white;
 
-    width: 1.2rem;
-    height: 1.2rem;
+    width: 1rem;
+    height: 1rem;
     border: 1px solid #aaa;
     border-radius: 10%;
 
 }
 
 .list-checkbox::after{
+    position: absolute;
     content: "";
     display: none;
-    border: solid #444;
-    border-width: 0px 3px 4px 0px;
-    border-radius: 40%;
-    transform: rotate(35deg);
-    width: 0.5rem;
-    height: 1.1rem;
+    border: solid #7a7;
+    border-width: 0px 6px 6px 0px;
+    border-radius: 0px 7px 0px 7px;
+    transform: rotate(40deg);
+    width: 0.8rem;
+    height: 1.4rem;
+    right: 1rem;
+    left: 0.1rem;
+    bottom: -0.1rem;
 }
 
 .list-checkbox:checked::after {
