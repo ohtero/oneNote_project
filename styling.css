@@ -54,10 +54,6 @@ ul {
     background-color: white;
 }
 
-ul > :last-child {
-    border-bottom: solid 0.05rem #999;    
-}
-
 li {
     position: relative;
     display: flex;
@@ -108,9 +104,10 @@ li {
     min-width: 1rem;
     border: hidden;  
 }
-#input-textfield:active {  
 
-    border: hidden;  
+#item-list {
+    border-bottom: solid 0.05rem #999;
+    border-bottom-right-radius: 7px;
 }
 
 .checkbox-container {
@@ -166,7 +163,7 @@ li {
 }
 
 .completed {
-    background-color: #ccc;
+    background: linear-gradient(to right, #ccc, 95%, white) ;
     color: #777;
 }
 
