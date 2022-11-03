@@ -88,7 +88,7 @@ li {
 
 .input-error::after {
     font-size: 0.8rem;
-    content: "Length must be at least 4 characters!";
+    content: "Length can't be under 3 characters or only spaces!";
     display: block;
     position: absolute;
     background-color: rgb(253, 255, 231);
@@ -123,10 +123,7 @@ li {
 }
 
 .list-checkbox {
-    position: relative;
-    /* display: flex;
-    justify-content: center;
-    align-items: center; */
+    position: relative;;
     -webkit-appearance: none;
     appearance: none;
     background-color: white;
@@ -152,7 +149,7 @@ li {
     height: 1.4rem;
     right: 1rem;
     left: 0.1rem;
-    bottom: -0.1rem;
+    bottom: 0rem;
 }
 
 .list-checkbox:checked::after {

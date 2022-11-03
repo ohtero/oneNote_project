@@ -272,7 +272,7 @@ const inputField = document.getElementById("input-textfield");
 const modal = document.getElementById('alert-modal');    
 
 function checkFieldValue() {        // Checks if input value is > 3. If not, shows error
-    if (inputField.value.length > 3 ) {
+    if (inputField.value.length > 2 && inputField.value.trim().length !== 0) {
         saveToLocal(inputField.value);  // Saves to local storage
         appendItem(inputField.value);
         inputField.value = "";
