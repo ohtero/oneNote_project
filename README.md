@@ -7,7 +7,7 @@ Both the list items and counter values are stored to Local Storage.
 HOW-TO-USE
 
 The input field on the top of the app accepts text that is no shorter than 4 characters. The text can be appended to the list by clicking the 'plus' icon 
-or by hitting 'enter' on keyboard. After adding the item, the input field gains focus again for easy writing of more list items.
+or by hitting 'enter' on keyboard.
 
 On the left side of the list items the checkmark toggled on/off, which gerys out the corresponding line, and removes returns it to normal state when unchecked.
 The checked/unchecked state of the items persist on page reload.
